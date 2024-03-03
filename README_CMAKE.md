@@ -41,7 +41,7 @@ Nucleo_64.menu.pnum.NUCLEO_F411RE.node="NODE_F411RE,NUCLEO"
 
 Then CMake can be run to launch the configuration step. This is only needed on the very first time, at the beginning of the project.
 ```sh
-cmake -S [sketch folder] -B [build folder] -G "Unix Makefiles" # "-G -G "Unix Makefiles"" -> generate make files
+cmake -S [sketch folder] -B [build folder] -G "Unix Makefiles" # "-G "Unix Makefiles"" -> generate make files
 ```
 The build folder is conventionally located at the root of the sketch folder and named `build`, e.g. :
 ```
@@ -53,9 +53,8 @@ The build folder is conventionally located at the root of the sketch folder and 
 ```
 
 Finally, the sketch can be (re-)built with `cmake --build <build folder>`.
-This can also be done by invoking the build tool (usually `make` or `ninja`) directly from
-the sketch folder (optionally with verbose output) with `make -C ./build VERBOSE=1'`.
-**This last step is the only one needed in order to rebuild the project, even if some source files, or even the CMakeLists.txt, have changed.**
+**This last step is the only one needed in order to rebuild the project, even if some source files, or even the CMakeLists.txt, have changed.** This can also be done by invoking the build tool directly from the sketch folder (optionally with verbose output)
+with `make -C ./build VERBOSE=1`.
 
 For more details on how to use CMake, please read the CMake [User Interaction Guide](https://cmake.org/cmake/help/v3.21/guide/user-interaction/index.html).
 
