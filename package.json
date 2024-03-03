@@ -1,0 +1,6 @@
+{
+    "name": "framework-arduinostm32",
+    "description": "Arduino UVOS Framework (UVOS STM32 Core)",
+    "version": "1.0.0",
+    "url": "https://github.com/geosmall/Arduino_STM32_LL"
+}
