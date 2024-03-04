@@ -21,6 +21,7 @@
 #define Arduino_h
 
 #include "board.h"
+#include "uvos.h"
 
 #ifdef __cplusplus
 extern "C" {
