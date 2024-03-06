@@ -19,7 +19,6 @@ target_link_libraries(variant INTERFACE variant_usage)
 
 
 add_library(variant_bin OBJECT EXCLUDE_FROM_ALL
-  usbd_conf.c
   variant_DISCO_F407VG.cpp
 )
 

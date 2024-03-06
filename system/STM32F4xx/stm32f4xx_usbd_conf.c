@@ -27,6 +27,7 @@
 
 #include "stm32_def.h"
 #include "stm32yyxx_ll_gpio.h"
+#include "variant.h"
 
 /* USER CODE BEGIN Includes */
 
@@ -78,35 +79,16 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle)
 
   if(pcdHandle->Instance==USB_OTG_FS)
   {
-  /* USER CODE BEGIN USB_OTG_FS_MspInit 0 */
+    /* USB FS GPIO Configuration (values per variant.h file) */
+    USB_FS_GPIO_CLK_ENABLE();
 
-  /* USER CODE END USB_OTG_FS_MspInit 0 */
-
-    __HAL_RCC_GPIOA_CLK_ENABLE();
-    /**USB_OTG_FS GPIO Configuration
-    PA11     ------> USB_OTG_FS_DM
-    PA12     ------> USB_OTG_FS_DP
-    */
-    // GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_12;
-    // GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    // GPIO_InitStruct.Pull = GPIO_NOPULL;
-    // GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    // GPIO_InitStruct.Alternate = GPIO_AF10_OTG_FS;
-    // HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-    /* GPIO Ports Clock Enable */
-    // LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
-
-    /* USB FS GPIO Configuration */
-    /* PA11 ------> USB_DM
-       PA12 ------> USB_DP */
-    GPIO_InitStruct.Pin = LL_GPIO_PIN_11|LL_GPIO_PIN_12;
+    GPIO_InitStruct.Pin = OTG_FS_DM_PIN | OTG_FS_DP_PIN;
     GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
     GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
     GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
     GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-    GPIO_InitStruct.Alternate = LL_GPIO_AF_10;
-    LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    GPIO_InitStruct.Alternate = USB_FS_AF;
+    LL_GPIO_Init(OTG_FS_PORT, &GPIO_InitStruct);
 
     /* Peripheral clock enable */
     __HAL_RCC_USB_OTG_FS_CLK_ENABLE();

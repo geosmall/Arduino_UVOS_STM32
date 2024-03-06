@@ -21,7 +21,7 @@ extern "C" {
 #if defined(STM32F4xx)
 #include "stm32f4xx_conf.h"
 #elif defined(STM32H7xx)
-#include "stm32f7xx_conf.h"
+#include "stm32h7xx_conf.h"
 #else
 #error "No Architecture defined"
 #endif
