@@ -9,5 +9,5 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   UVOS_LED_Toggle(UVOS_LED_HEARTBEAT);
-  delay(500);
+  delayMicroseconds(500000);
 }
