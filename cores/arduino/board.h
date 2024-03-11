@@ -6,6 +6,13 @@
 */
 #include "variant.h"
 
+// ------------------------
+// UVOS_LED
+// ------------------------
+#define UVOS_LED_HEARTBEAT 0
+#define UVOS_LED_ALARM     1
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */

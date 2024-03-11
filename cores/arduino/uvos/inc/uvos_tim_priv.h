@@ -3,7 +3,11 @@
 
 #include <uvos_stm32.h>
 
+
+
 // STM32 SPL compatibility ------------------------------------>>>
+
+#if 0 // gls
 
 #define TIM_IT_Update                      ((uint16_t)0x0001)
 #define TIM_IT_CC1                         ((uint16_t)0x0002)
@@ -23,6 +27,8 @@
                            ((IT) == TIM_IT_COM) || \
                            ((IT) == TIM_IT_Trigger) || \
                            ((IT) == TIM_IT_Break))
+
+#endif // gls
 
 // STM32 SPL compatibility ------------------------------------<<<
 

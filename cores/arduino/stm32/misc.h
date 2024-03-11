@@ -71,9 +71,8 @@ typedef struct {
 #define IS_NVIC_LP(LP) (((LP) == NVIC_LP_SEVONPEND) || \
                         ((LP) == NVIC_LP_SLEEPDEEP) || \
                         ((LP) == NVIC_LP_SLEEPONEXIT))
-/**
-  * @}
-  */
+
+#if 0 // gls
 
 /** @defgroup MISC_Preemption_Priority_Group
   * @{
@@ -100,7 +99,11 @@ typedef struct {
 
 #define IS_NVIC_SUB_PRIORITY(PRIORITY)  ((PRIORITY) < 0x10)
 
+#endif // gls
+
 #define IS_NVIC_OFFSET(OFFSET)  ((OFFSET) < 0x000FFFFF)
+
+#if 0 // gls
 
 /**
   * @}
@@ -121,6 +124,8 @@ typedef struct {
 /**
   * @}
   */
+
+#endif // gls
 
 /* Exported macro ------------------------------------------------------------*/
 

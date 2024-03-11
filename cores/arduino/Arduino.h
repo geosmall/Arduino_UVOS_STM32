@@ -21,15 +21,16 @@
 #define Arduino_h
 
 #include "board.h"
-#include "uvos.h"
+#include "time.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-extern void setup(void) ;
-extern void loop(void) ;
+extern void setup(void);
+extern void loop(void);
 
+extern void yield(void);
 #ifdef __cplusplus
 } // extern "C"
 #endif // __cplusplus

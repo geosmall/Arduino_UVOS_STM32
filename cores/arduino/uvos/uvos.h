@@ -38,6 +38,18 @@ extern "C" {
 #include <uvos_delay.h>
 #endif
 
+#ifdef UVOS_INCLUDE_SYS
+#include <uvos_sys.h>
+#endif
+
+#ifdef UVOS_INCLUDE_GPIO
+#include <uvos_gpio.h>
+#endif
+
+/* UVOS common peripherals */
+#ifdef UVOS_INCLUDE_LED
+#include <uvos_led.h>
+#endif
 
 #if 0 // gls
 

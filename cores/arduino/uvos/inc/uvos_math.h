@@ -54,8 +54,12 @@
 #define LPF_ALPHA(dt, fc)       (dt / (dt + 1.0f / (2.0f * M_PI_F * fc)))
 
 // Useful math macros
-#define MAX(a, b)               ((a) > (b) ? (a) : (b))
-#define MIN(a, b)               ((a) < (b) ? (a) : (b))
+#ifndef MAX
+  #define MAX(a, b)               ((a) > (b) ? (a) : (b))
+#endif /* MAX(a, b) */
+#ifndef MIN
+  #define MIN(a, b)               ((a) < (b) ? (a) : (b))
+#endif /* MIN(a, b) */
 
 #define IS_REAL(f)              (!isnan(f) && !isinf(f))
 

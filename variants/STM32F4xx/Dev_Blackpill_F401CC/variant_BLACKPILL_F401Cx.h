@@ -1,5 +1,7 @@
 #pragma once
 
+#define HSE_VALUE 25000000U
+
 #define OTG_FS_DM_PIN LL_GPIO_PIN_11
 #define OTG_FS_DP_PIN LL_GPIO_PIN_12
 #define OTG_FS_PORT GPIOA

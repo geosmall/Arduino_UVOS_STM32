@@ -1,9 +1,6 @@
 #ifndef UVOS_CONFIG_H
 #define UVOS_CONFIG_H
 
-/* ST Nucleo F411RE series */
-#define NUCLEO_F411RE
-
 #define UVOS_MAIN_LOOP_RATE 1000
 
 /*

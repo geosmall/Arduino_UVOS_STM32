@@ -1,6 +1,6 @@
 #pragma once
 
-#include "uvos.h"
+#include <uvos.h>
 
 struct stm32_irq {
   void ( *handler )( uint32_t );
