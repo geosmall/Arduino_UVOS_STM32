@@ -42,6 +42,11 @@ extern "C" {
 #include <uvos_sys.h>
 #endif
 
+/* UVOS hardware peripherals */
+#ifdef UVOS_INCLUDE_IRQ
+#include <uvos_irq.h>
+#endif
+
 #ifdef UVOS_INCLUDE_GPIO
 #include <uvos_gpio.h>
 #endif
