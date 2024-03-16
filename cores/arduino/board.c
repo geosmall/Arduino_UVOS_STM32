@@ -17,15 +17,17 @@ WEAK void board_init(void)
 {
   configPeriphClocks();
 
-#ifdef DWT_BASE
-  dwt_init();
-#endif /* DWT_BASE */
-
   /* Initialize the HAL */
   HAL_Init();
 
   /* Configure the system clock */
   SystemClock_Config();
+
+  /* Must come after SystemClock_Config() to
+     properly calculate DWT uSec ticks */
+#if defined(UVOS_INCLUDE_DELAY)
+  UVOS_DELAY_Init();
+#endif /* defined(UVOS_INCLUDE_DELAY) */
 
 #if defined(USBCON) && defined(USBD_USE_CDC)
   USB_DEVICE_Init();

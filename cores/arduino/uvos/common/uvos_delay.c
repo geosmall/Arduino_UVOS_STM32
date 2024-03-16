@@ -15,13 +15,8 @@ static uint32_t us_modulo;
 
 int32_t UVOS_DELAY_Init( void )
 {
-	// RCC_ClocksTypeDef	clocks;
-	LL_RCC_ClocksTypeDef clocks;
-
 	/* compute the number of system clocks per microsecond */
-	// RCC_GetClocksFreq(&clocks);
-	LL_RCC_GetSystemClocksFreq( &clocks );
-	us_ticks = clocks.SYSCLK_Frequency / 1000000;
+	us_ticks = HAL_RCC_GetSysClockFreq() / 1000000;
 	UVOS_DEBUG_Assert( us_ticks > 1 );
 
 	// Split this into two steps to avoid 64bit maths

@@ -45,12 +45,6 @@ extern uint32_t micros(void) ;
  */
 extern void delay(uint32_t ms) ;
 
-/**
- * \brief Pauses the program for the amount of time (in microseconds) specified as parameter.
- * \param ms the number of microseconds to pause (uint32_t)
- */
-extern void delayMicroseconds(uint32_t us) ;
-
 #ifdef __cplusplus
 }
 #endif
