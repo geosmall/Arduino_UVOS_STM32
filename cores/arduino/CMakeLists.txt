@@ -21,9 +21,10 @@ target_link_libraries(core INTERFACE core_usage)
 add_library(core_bin STATIC EXCLUDE_FROM_ALL
   board.c
   main.cpp
-  stm32/clock.c
-  stm32/dwt.c
+  time.c
+  stm32/misc.c
   stm32/startup_stm32yyxx.S
+  stm32/sys_clocks.c
   stm32/syscalls.c
   stm32/system_stm32yyxx.c
   stm32/usb/usb_device.c
@@ -57,6 +58,18 @@ add_library(core_bin STATIC EXCLUDE_FROM_ALL
   stm32/LL/stm32yyxx_ll_usart.c
   stm32/LL/stm32yyxx_ll_usb.c
   stm32/LL/stm32yyxx_ll_utils.c
+  uvos/common/uvos_com.c
+  uvos/common/uvos_delay.c
+  uvos/common/uvos_gpio.c
+  uvos/common/uvos_heap.c
+  uvos/common/uvos_irq.c
+  uvos/common/uvos_led.c
+  uvos/common/uvos_mutex.c
+  uvos/common/uvos_queue.c
+  uvos/common/uvos_semaphore.c
+  uvos/common/uvos_sys.c
+  uvos/hal/uvos_usart_xx.c
+  uvos/libraries/fifo_buffer.c
 )
 target_link_libraries(core_bin PUBLIC core_usage)
 

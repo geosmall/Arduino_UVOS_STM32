@@ -47,6 +47,10 @@ extern "C" {
 #include <uvos_irq.h>
 #endif
 
+#ifdef UVOS_INCLUDE_USART
+#include <uvos_usart.h>
+#endif
+
 #ifdef UVOS_INCLUDE_GPIO
 #include <uvos_gpio.h>
 #endif
@@ -54,6 +58,22 @@ extern "C" {
 /* UVOS common peripherals */
 #ifdef UVOS_INCLUDE_LED
 #include <uvos_led.h>
+#endif
+
+/* UVOS abstract comms interface with options */
+#ifdef UVOS_INCLUDE_COM
+/* #define UVOS_INCLUDE_COM_MSG */
+/* #define UVOS_INCLUDE_TELEMETRY_RF */
+/* #define UVOS_INCLUDE_COM_TELEM */
+/* #define UVOS_INCLUDE_COM_FLEXI */
+/* #define UVOS_INCLUDE_COM_AUX */
+/* #define UVOS_TELEM_PRIORITY_QUEUE */
+/* #define UVOS_INCLUDE_GPS */
+/* #define UVOS_GPS_MINIMAL */
+/* #define UVOS_INCLUDE_GPS_NMEA_PARSER */
+/* #define UVOS_INCLUDE_GPS_UBX_PARSER */
+/* #define UVOS_GPS_SETS_HOMELOCATION */
+#include <uvos_com.h>
 #endif
 
 #if 0 // gls

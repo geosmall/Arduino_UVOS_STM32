@@ -4,6 +4,7 @@
 /*
  * Core and peripherals registers definitions
 */
+#include "uvos_config.h"
 #include "variant.h"
 
 // ------------------------

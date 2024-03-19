@@ -1,5 +1,5 @@
-#ifndef UVOS_QUEUE_H_
-#define UVOS_QUEUE_H_
+#ifndef UVOS_QUEUE_H
+#define UVOS_QUEUE_H
 
 // Inspired by https://github.com/TauLabs/TauLabs
 
@@ -8,6 +8,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
+
+#include "uvos_config.h"
 
 #if defined(UVOS_INCLUDE_FREERTOS)
 
@@ -25,7 +27,7 @@ struct uvos_queue {
   void *mpb;
 };
 
-#else
+#elif defined(UVOS_INCLUDE_IRQ)
 
 #include "fifo_buffer.h"
 
@@ -34,6 +36,10 @@ struct uvos_queue {
   size_t item_size;
   t_fifo_buffer fifo;
 };
+
+#else
+
+#error "uvos_queue.h requires either UVOS_INCLUDE_FREERTOS, UVOS_INCLUDE_CHIBIOS or UVOS_INCLUDE_IRQ to be defined"
 
 #endif /* defined(UVOS_INCLUDE_FREERTOS) */
 
@@ -55,7 +61,7 @@ bool UVOS_Queue_Send( struct uvos_queue *queuep, const void *itemp, uint32_t tim
 bool UVOS_Queue_Send_FromISR( struct uvos_queue *queuep, const void *itemp, bool *wokenp );
 bool UVOS_Queue_Receive( struct uvos_queue *queuep, void *itemp, uint32_t timeout_ms );
 
-#endif /* UVOS_QUEUE_H_ */
+#endif /* UVOS_QUEUE_H */
 
 /**
   * @}

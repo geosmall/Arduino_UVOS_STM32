@@ -37,9 +37,10 @@ ENTRY(Reset_Handler)
 
 /* Highest address of the user mode stack */
 _estack = ORIGIN(RAM_D1) + LENGTH(RAM_D1);    /* end of RAM_D1 */
+
 /* Generate a link error if heap and stack don't fit into RAM_D1 */
-_Min_Heap_Size = 0x200 ;      /* required amount of heap  */
-_Min_Stack_Size = 0x400 ; /* required amount of stack */
+_Min_Heap_Size = 0x2000;  /* required amount of heap  */
+_Min_Stack_Size = 0x2000; /* required amount of stack */
 
 /* Specify the memory areas */
 MEMORY
@@ -156,7 +157,11 @@ SECTIONS
     . = ALIGN(8);
     PROVIDE ( end = . );
     PROVIDE ( _end = . );
+
+    _sheap = . ;
     . = . + _Min_Heap_Size;
+    _eheap = .;
+
     . = . + _Min_Stack_Size;
     . = ALIGN(8);
   } >RAM_D1
