@@ -24,6 +24,8 @@ enum uvos_usart_dev_magic {
   UVOS_USART_DEV_MAGIC = 0x4152834A,
 };
 
+#define USART_DEVS __attribute__((section(".usart_devs")))
+
 #define UVOS_USART_DMA_BUFFER_SIZE 64
 
 struct uvos_usart_dev {
@@ -34,7 +36,7 @@ struct uvos_usart_dev {
   uint32_t rx_in_context;
   uvos_com_callback tx_out_cb;
   uint32_t tx_out_context;
-  uint8_t dma_buffer[UVOS_USART_DMA_BUFFER_SIZE];
+  ALIGN_32BYTES (uint8_t dma_buffer[UVOS_USART_DMA_BUFFER_SIZE]);
   bool dma_tx_is_active;
 };
 
@@ -50,7 +52,7 @@ static struct uvos_usart_dev *UVOS_USART_alloc( void )
 {
   struct uvos_usart_dev *usart_dev;
 
-  usart_dev = ( struct uvos_usart_dev * )uvos_malloc( sizeof( struct uvos_usart_dev ) );
+  usart_dev = ( struct uvos_usart_dev * )UVOS_malloc( sizeof( struct uvos_usart_dev ) );
   if ( !usart_dev ) {
     return NULL;
   }
@@ -60,7 +62,7 @@ static struct uvos_usart_dev *UVOS_USART_alloc( void )
   return usart_dev;
 }
 #else
-static struct uvos_usart_dev uvos_usart_devs[ UVOS_USART_MAX_DEVS ];
+USART_DEVS static struct uvos_usart_dev uvos_usart_devs[ UVOS_USART_MAX_DEVS ];
 static uint8_t uvos_usart_num_devs;
 static struct uvos_usart_dev *UVOS_USART_alloc( void )
 {
@@ -217,6 +219,11 @@ int32_t UVOS_USART_Init( uint32_t *usart_id, const struct uvos_usart_cfg *cfg )
   // USART_Cmd( usart_dev->cfg->regs, ENABLE );
   LL_USART_Enable( usart_dev->cfg->regs );
 
+  /* Polling USART initialisation */
+  while ( ( !( LL_USART_IsActiveFlag_TEACK( usart_dev->cfg->regs ) ) ) || \
+          ( !( LL_USART_IsActiveFlag_REACK( usart_dev->cfg->regs ) ) ) ) {
+  }
+
   return 0;
 
 out_fail:
@@ -255,6 +262,9 @@ static void UVOS_USART_TxStart( uint32_t usart_id, __attribute__( ( unused ) ) u
       if ( bytes_to_send > 0 ) {
         /* Per STM32F4 DMA AN4031, 4.2 Clear all DMA stream flags in DMA_xIFCR register before starting new transfer. */
         DMA_ClearAllFlags( usart_dev->cfg->dma_tx.tx.DMAx, usart_dev->cfg->dma_tx.tx.stream );
+        /*  Data Synchronization Barrier to ensures all data memory transfer
+            from CPU D-Cache (M7) is completed before DMA start */
+        __DSB();
         /* Per 4.3 Enable DMA stream used, then enable the peripheral DMA request enable bit. */
         LL_DMA_EnableStream( usart_dev->cfg->dma_tx.tx.DMAx, usart_dev->cfg->dma_tx.tx.stream );
         LL_USART_EnableDMAReq_TX( usart_dev->cfg->regs );
@@ -428,6 +438,9 @@ void UVOS_USART_generic_dma_irq_handler( uint32_t usart_id )
       usart_dev->dma_tx_is_active = true;
       /* Per STM32F4 DMA AN4031, 4.2 Clear all DMA stream flags in DMA_xIFCR register before starting new transfer. */
       DMA_ClearAllFlags( usart_dev->cfg->dma_tx.tx.DMAx, usart_dev->cfg->dma_tx.tx.stream );
+      /*  Data Synchronization Barrier to ensures all data memory transfer
+          from CPU D-Cache (M7) is completed before DMA start */
+      __DSB();
       /* Per 4.3 Enable DMA stream used, then enable the peripheral DMA request enable bit. */
       LL_DMA_EnableStream( usart_dev->cfg->dma_tx.tx.DMAx, usart_dev->cfg->dma_tx.tx.stream );
       LL_USART_EnableDMAReq_TX( usart_dev->cfg->regs );

@@ -45,12 +45,13 @@ _Min_Stack_Size = 0x2000; /* required amount of stack */
 /* Specify the memory areas */
 MEMORY
 {
-  FLASH (rx)     : ORIGIN = 0x08000000, LENGTH = 2048K
-  RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 128K
-  RAM_D1 (xrw)   : ORIGIN = 0x24000000, LENGTH = 512K
-  RAM_D2 (xrw)   : ORIGIN = 0x30000000, LENGTH = 288K
-  RAM_D3 (xrw)   : ORIGIN = 0x38000000, LENGTH = 64K
-  ITCMRAM (xrw)  : ORIGIN = 0x00000000, LENGTH = 64K
+  FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 2048K
+  RAM (xrw)       : ORIGIN = 0x20000000, LENGTH = 128K  /*  DTCM RAM  */
+  RAM_D1 (xrw)    : ORIGIN = 0x24000000, LENGTH = 512K  /*  AXI SRAM  */
+  SRAM_D2ab (xrw) : ORIGIN = 0x30000000, LENGTH = 256K  /*  SRAM1,2   */
+  SRAM_D2c (xrw)  : ORIGIN = 0x30040000, LENGTH = 32K   /*  SRAM3     */
+  SRAM_D3 (xrw)   : ORIGIN = 0x38000000, LENGTH = 64K   /*  SRAM4     */
+  ITCMRAM (xrw)   : ORIGIN = 0x00000000, LENGTH = 64K   /*  ITCM RAM  */
 }
 
 /* Define output sections */
@@ -165,6 +166,11 @@ SECTIONS
     . = . + _Min_Stack_Size;
     . = ALIGN(8);
   } >RAM_D1
+
+  .usart_devs : /* USART Device Array */
+  {
+    *(.usart_devs)
+  } >SRAM_D2c
 
   /* Remove information from the standard libraries */
   /DISCARD/ :

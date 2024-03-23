@@ -201,6 +201,11 @@ void SysClkHalfSpeed(void);
  */
 void SysClkFullSpeed(void);
 
+/*
+ * MPU - configuration
+ */
+void MPU_Config(void);
+
 #ifdef __cplusplus
 }
 #endif

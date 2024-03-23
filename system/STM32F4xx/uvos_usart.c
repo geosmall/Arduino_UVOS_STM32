@@ -50,7 +50,7 @@ static struct uvos_usart_dev *UVOS_USART_alloc( void )
 {
   struct uvos_usart_dev *usart_dev;
 
-  usart_dev = ( struct uvos_usart_dev * )uvos_malloc( sizeof( struct uvos_usart_dev ) );
+  usart_dev = ( struct uvos_usart_dev * )UVOS_malloc( sizeof( struct uvos_usart_dev ) );
   if ( !usart_dev ) {
     return NULL;
   }
