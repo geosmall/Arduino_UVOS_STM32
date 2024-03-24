@@ -47,7 +47,7 @@ struct uvos_usart_tx_buf {
 #define USART_RX_DATA_REG RDR
 #define USART_TX_DATA_REG TDR
 #define UVOS_USART_DisableIT_TXE LL_USART_DisableIT_TXE_TXFNF
-  /* Align on M7’s 32 byte D-Cache line size */
+/* Align on M7’s 32 byte D-Cache line size */
 struct uvos_usart_tx_buf {
   ALIGN_32BYTES ( uint8_t dma_tx_buf[ UVOS_USART_DMA_BUFFER_SIZE ] );
 };
@@ -69,15 +69,6 @@ struct uvos_usart_dev {
   uint32_t tx_out_context;
   bool dma_tx_is_active;
 };
-
-// struct uvos_usart_tx_buf {
-// #ifdef STM32H7xx
-//   /* Align on M7’s 32 byte D-Cache line size */
-//   ALIGN_32BYTES ( uint8_t dma_tx_buf[ UVOS_USART_DMA_BUFFER_SIZE ] );
-// #else
-//   uint8_t dma_tx_buf[ UVOS_USART_DMA_BUFFER_SIZE ];
-// #endif /* STM32H7xx */
-// };
 
 static uint16_t get_dma_data_from_higher_level_fifo( struct uvos_usart_dev *usart_dev, bool *need_yield );
 
@@ -207,21 +198,6 @@ int32_t UVOS_USART_Init( uint32_t *usart_id, const struct uvos_usart_cfg *cfg )
   /* Configure the USART */
   LL_USART_Init( usart_dev->cfg->regs, ( LL_USART_InitTypeDef * )&usart_dev->cfg->init );
 
-  /* Save DMA Tx instance */
-  DMA_TypeDef *DMAx_tx = usart_dev->cfg->dma_tx.tx.DMAx;
-
-  /* Configure DMA for USART Tx */
-  LL_DMA_DeInit( DMAx_tx, usart_dev->cfg->dma_tx.tx.stream );
-  LL_DMA_DisableStream( DMAx_tx, usart_dev->cfg->dma_tx.tx.stream );
-  LL_DMA_Init( DMAx_tx, usart_dev->cfg->dma_tx.tx.stream, ( LL_DMA_InitTypeDef * ) & ( usart_dev->cfg->dma_tx.tx.init ) );
-  usart_dev->dma_tx_is_active = false;
-
-  /* Set DMA memory address to the USART Tx device's buffer */
-  LL_DMA_SetMemoryAddress( usart_dev->cfg->dma_tx.tx.DMAx,
-                           usart_dev->cfg->dma_tx.tx.stream,
-                           // ( uint32_t ) & ( usart_dev->dma_buffer ) );
-                           ( uint32_t ) & ( uvos_usart_tx_buffers[ usart_dev->index ].dma_tx_buf ) );
-
   *usart_id = ( uint32_t )usart_dev;
 
   /* Configure USART Interrupts */
@@ -253,6 +229,21 @@ int32_t UVOS_USART_Init( uint32_t *usart_id, const struct uvos_usart_cfg *cfg )
   LL_USART_EnableIT_RXNE( usart_dev->cfg->regs );
 
   if ( usart_dev->cfg->use_dma_tx ) {
+    /* Save DMA Tx instance */
+    DMA_TypeDef *DMAx_tx = usart_dev->cfg->dma_tx.tx.DMAx;
+
+    /* Configure DMA for USART Tx */
+    LL_DMA_DeInit( DMAx_tx, usart_dev->cfg->dma_tx.tx.stream );
+    LL_DMA_DisableStream( DMAx_tx, usart_dev->cfg->dma_tx.tx.stream );
+    LL_DMA_Init( DMAx_tx, usart_dev->cfg->dma_tx.tx.stream, ( LL_DMA_InitTypeDef * ) & ( usart_dev->cfg->dma_tx.tx.init ) );
+    usart_dev->dma_tx_is_active = false;
+
+    /* Set DMA memory address to the USART Tx device's buffer */
+    LL_DMA_SetMemoryAddress( usart_dev->cfg->dma_tx.tx.DMAx,
+                             usart_dev->cfg->dma_tx.tx.stream,
+                             // ( uint32_t ) & ( usart_dev->dma_buffer ) );
+                             ( uint32_t ) & ( uvos_usart_tx_buffers[ usart_dev->index ].dma_tx_buf ) );
+
     /* Configure USART DMA transfer complete (TC) Interrupt */
     NVIC_Init( ( NVIC_InitTypeDef * ) & ( usart_dev->cfg->dma_tx.irq.init ) );
     LL_DMA_EnableIT_TC( usart_dev->cfg->dma_tx.tx.DMAx, usart_dev->cfg->dma_tx.tx.stream );
@@ -420,27 +411,30 @@ static void UVOS_USART_generic_irq_handler( uint32_t usart_id )
     }
   }
 
-  /* Check if TXE flag is set */
-  bool tx_need_yield = false;
-  if ( isr & UVOS_USART_ISR_TXE_BIT ) {
-    if ( usart_dev->tx_out_cb ) {
-      uint8_t b;
-      uint16_t bytes_to_send;
+  if ( usart_dev->cfg->use_dma_tx == false ) {
 
-      bytes_to_send = ( usart_dev->tx_out_cb )( usart_dev->tx_out_context, &b, 1, NULL, &tx_need_yield );
+    /* Check if TXE flag is set */
+    bool tx_need_yield = false;
+    if ( isr & UVOS_USART_ISR_TXE_BIT ) {
+      if ( usart_dev->tx_out_cb ) {
+        uint8_t b;
+        uint16_t bytes_to_send;
 
-      if ( bytes_to_send > 0 ) {
-        /* Send the byte we've been given */
-        usart_dev->cfg->regs->USART_TX_DATA_REG = b;
+        bytes_to_send = ( usart_dev->tx_out_cb )( usart_dev->tx_out_context, &b, 1, NULL, &tx_need_yield );
+
+        if ( bytes_to_send > 0 ) {
+          /* Send the byte we've been given */
+          usart_dev->cfg->regs->USART_TX_DATA_REG = b;
+        } else {
+          /* No bytes to send, disable TXE interrupt */
+          // USART_ITConfig( usart_dev->cfg->regs, USART_IT_TXE, DISABLE );
+          UVOS_USART_DisableIT_TXE( usart_dev->cfg->regs );
+        }
       } else {
         /* No bytes to send, disable TXE interrupt */
         // USART_ITConfig( usart_dev->cfg->regs, USART_IT_TXE, DISABLE );
         UVOS_USART_DisableIT_TXE( usart_dev->cfg->regs );
       }
-    } else {
-      /* No bytes to send, disable TXE interrupt */
-      // USART_ITConfig( usart_dev->cfg->regs, USART_IT_TXE, DISABLE );
-      UVOS_USART_DisableIT_TXE( usart_dev->cfg->regs );
     }
   }
 
