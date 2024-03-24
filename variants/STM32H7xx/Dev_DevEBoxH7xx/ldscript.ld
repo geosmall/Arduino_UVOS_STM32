@@ -167,9 +167,9 @@ SECTIONS
     . = ALIGN(8);
   } >RAM_D1
 
-  .usart_devs : /* USART Device Array */
+  .nocache_sram : /* USART Device Array */
   {
-    *(.usart_devs)
+    *(.nocache_sram)
   } >SRAM_D2c
 
   /* Remove information from the standard libraries */
