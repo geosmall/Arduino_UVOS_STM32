@@ -21,7 +21,6 @@
 #define Arduino_h
 
 #include "board.h"
-#include "time.h"
 
 #ifdef __cplusplus
 extern "C" {

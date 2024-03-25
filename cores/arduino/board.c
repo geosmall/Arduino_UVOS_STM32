@@ -1,10 +1,9 @@
 #include "board.h"
-#include "sys_clocks.h"
 #if defined(USBCON) && defined(USBD_USE_CDC)
   #include "usb_device.h"
 #endif
 
-#include <uvos.h>
+#include "uvos.h"
 
 #include "board_hw_defs.c.inc"
 
@@ -90,7 +89,7 @@ extern "C" {
 
 WEAK void board_init(void)
 {
-  configPeriphClocks();
+  UVOS_SYS_ConfigPeriphClocks();
 
   /* Initialize the HAL */
   HAL_Init();

@@ -29,6 +29,7 @@ extern "C" {
 /* UVOS Hardware Includes (Common) */
 #include <uvos_heap.h>
 #include <uvos_sensors.h>
+#include <uvos_time.h>
 
 /* UVOS board specific feature selection */
 #include "uvos_config.h"
