@@ -10,7 +10,7 @@ extern "C" {
   * @brief System Clock Configuration
   * @retval None
   */
-WEAK void SystemClock_Config(void)
+void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};

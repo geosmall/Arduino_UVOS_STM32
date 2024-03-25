@@ -56,7 +56,7 @@
 extern "C" {
 #endif // __cplusplus
 
-// weaked functions declaration
+// function declaration
 void SystemClock_Config(void);
 
 #if !defined(Error_Handler)

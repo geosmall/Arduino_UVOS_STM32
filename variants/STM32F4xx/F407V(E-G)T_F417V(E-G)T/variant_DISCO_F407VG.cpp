@@ -26,7 +26,7 @@ extern "C" {
   * @param  None
   * @retval None
   */
-WEAK void SystemClock_Config(void)
+void SystemClock_Config(void)
 {
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {};
   RCC_OscInitTypeDef RCC_OscInitStruct = {};

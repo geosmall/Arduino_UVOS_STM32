@@ -34,6 +34,9 @@ extern "C" {
 /* UVOS board specific feature selection */
 #include "uvos_config.h"
 
+/* UVOS board specific device configuration */
+#include "uvos_board.h"
+
 /* UVOS system functions */
 #ifdef UVOS_INCLUDE_DELAY
 #include <uvos_delay.h>

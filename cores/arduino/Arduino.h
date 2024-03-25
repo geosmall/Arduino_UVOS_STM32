@@ -20,8 +20,6 @@
 #ifndef Arduino_h
 #define Arduino_h
 
-#include "board.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
@@ -30,6 +28,7 @@ extern void setup(void);
 extern void loop(void);
 
 extern void yield(void);
+
 #ifdef __cplusplus
 } // extern "C"
 #endif // __cplusplus

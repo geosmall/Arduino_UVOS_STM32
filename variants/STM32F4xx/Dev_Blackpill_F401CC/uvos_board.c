@@ -1,6 +1,5 @@
-#include "board.h"
 #if defined(USBCON) && defined(USBD_USE_CDC)
-  #include "usb_device.h"
+#include "usb_device.h"
 #endif
 
 #include "uvos.h"
@@ -83,12 +82,29 @@ static void UVOS_Board_configure_com( const struct uvos_usart_cfg *usart_port_cf
   }
 }
 
-#ifdef __cplusplus
-extern "C" {
+/**
+ * UVOS_Board_Init()
+ * initializes all the core subsystems on this specific hardware
+ * called from main.cpp
+ */
+void UVOS_Board_Init( void )
+{
+  // Required by FreeRTOS, see http://www.freertos.org/RTOS-Cortex-M3-M4.html
+#ifdef NVIC_PRIORITYGROUP_4
+  HAL_NVIC_SetPriorityGrouping( NVIC_PRIORITYGROUP_4 );
 #endif
 
-WEAK void board_init(void)
-{
+#if (__CORTEX_M == 7U)
+  MPU_Config();
+  // Defined in CMSIS core_cm7.h
+#ifndef I_CACHE_DISABLED
+  SCB_EnableICache();
+#endif
+#ifndef D_CACHE_DISABLED
+  SCB_EnableDCache();
+#endif
+#endif /* (__CORTEX_M == 0x07U) */
+
   UVOS_SYS_ConfigPeriphClocks();
 
   /* Initialize the HAL */
@@ -133,8 +149,4 @@ WEAK void board_init(void)
 
 #endif /* UVOS_INCLUDE_DEBUG_CONSOLE */
 
-} /* end void board_init(void) */
-
-#ifdef __cplusplus
-}
-#endif
+} /* end void UVOS_Board_Init( void ) */
