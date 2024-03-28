@@ -27,7 +27,7 @@
 
 #include "stm32_def.h"
 #include "stm32yyxx_ll_gpio.h"
-#include "variant.h"
+#include "uvos_board.h" // USB GPIO Pin Definitions
 
 /* USER CODE BEGIN Includes */
 

@@ -85,6 +85,23 @@ Dev_boards.menu.pnum.BLACKPILL_F401CC.build.product_line=STM32F401xC
 Dev_boards.menu.pnum.BLACKPILL_F401CC.build.variant=STM32F4xx/Dev_Blackpill_F401CC
 Dev_boards.menu.pnum.BLACKPILL_F401CC.build.variant_h=variant_BLACKPILL_F401Cx.h
 Dev_boards.menu.pnum.BLACKPILL_F401CC.build.cmsis_lib_gcc=arm_cortexM4lf_math
+Dev_boards.menu.pnum.BLACKPILL_F401CC.build.st_extra_flags=-DHSE_VALUE=25000000U -D{build.product_line} {build.enable_usb} {build.xSerial}
+
+# BlackPill F411CE
+Dev_boards.menu.pnum.BLACKPILL_F411CE=BlackPill F411CE
+Dev_boards.menu.pnum.BLACKPILL_F411CE.node="NODE_F411CE,BlkPill"
+Dev_boards.menu.pnum.BLACKPILL_F411CE.upload.maximum_size=524288
+Dev_boards.menu.pnum.BLACKPILL_F411CE.upload.maximum_data_size=131072
+Dev_boards.menu.pnum.BLACKPILL_F411CE.build.mcu=cortex-m4
+Dev_boards.menu.pnum.BLACKPILL_F411CE.build.fpu=-mfpu=fpv4-sp-d16
+Dev_boards.menu.pnum.BLACKPILL_F411CE.build.float-abi=-mfloat-abi=hard
+Dev_boards.menu.pnum.BLACKPILL_F411CE.build.board=BLACKPILL_F411CE
+Dev_boards.menu.pnum.BLACKPILL_F411CE.build.series=STM32F4xx
+Dev_boards.menu.pnum.BLACKPILL_F411CE.build.product_line=STM32F411xE
+Dev_boards.menu.pnum.BLACKPILL_F411CE.build.variant=STM32F4xx/Dev_Blackpill_F411CE
+Dev_boards.menu.pnum.BLACKPILL_F411CE.build.variant_h=variant_BLACKPILL_F411CE.h
+Dev_boards.menu.pnum.BLACKPILL_F411CE.build.cmsis_lib_gcc=arm_cortexM4lf_math
+Dev_boards.menu.pnum.BLACKPILL_F411CE.build.st_extra_flags=-DHSE_VALUE=8000000U -D{build.product_line} {build.enable_usb} {build.xSerial}
 
 # DevEBoxH743VITX
 Dev_boards.menu.pnum.DevEBoxH743VITX=DevEBox H743VITX
@@ -100,7 +117,7 @@ Dev_boards.menu.pnum.DevEBoxH743VITX.build.product_line=STM32H743xx
 Dev_boards.menu.pnum.DevEBoxH743VITX.build.variant=STM32H7xx/Dev_DevEBoxH7xx
 Dev_boards.menu.pnum.DevEBoxH743VITX.build.variant_h=variant_DevEBoxH7xx.h
 Dev_boards.menu.pnum.DevEBoxH743VITX.build.cmsis_lib_gcc=arm_cortexM7lfsp_math
-Dev_boards.menu.pnum.DevEBoxH743VITX.build.st_extra_flags=-DCORE_CM7 -D{build.product_line} {build.enable_usb} {build.xSerial}
+Dev_boards.menu.pnum.DevEBoxH743VITX.build.st_extra_flags=-DCORE_CM7 -DHSE_VALUE=25000000U -D{build.product_line} {build.enable_usb} {build.xSerial}
 
 # Upload menu
 Dev_boards.menu.upload_method.swdMethod=STM32CubeProgrammer (SWD)
